@@ -1,6 +1,15 @@
+using CQRS_MediatR_Demo.Data;
+using CQRS_MediatR_Demo.Repositories;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+builder.Services.AddDbContext<DbContextClass>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("MyDbConnection")));
+builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+// Add MediatR services
+builder.Services.AddMediatR(config => config.RegisterServicesFromAssemblyContaining<Program>());
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
